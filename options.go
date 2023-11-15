@@ -1,5 +1,6 @@
 package libprovider
 
 type Options struct {
-	Logger
+	Logger Logger
+	Config []byte
 }
