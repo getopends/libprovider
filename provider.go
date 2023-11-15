@@ -3,7 +3,6 @@ package providerd
 import (
 	"context"
 	"errors"
-	"sync"
 )
 
 type (
@@ -91,16 +90,6 @@ type Provider interface {
 }
 
 type NewProviderFunc func(context.Context) (Provider, error)
-
-type Registry struct {
-	mu sync.RWMutex
-
-	providers map[string]NewProviderFunc
-}
-
-func (r *Registry) Register(s string, n NewProviderFunc) error {
-	return errors.ErrUnsupported
-}
 
 func CheckCountry(tc TransactionCreator, countries ...string) TransactionCreator {
 	return TransactionCreatorFunc(func(ctx context.Context, t *Transaction) (*CreateTransactionResult, error) {
