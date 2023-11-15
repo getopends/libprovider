@@ -5,39 +5,15 @@ import (
 	"errors"
 )
 
-type (
-	Transaction struct{}
-
-	Beneficiary struct{}
-
-	Account struct{}
-
-	Balance struct{}
-
-	Manifest struct{}
-
-	CreateTransactionResult struct{}
-
-	ConfirmTransactionResult struct{}
-
-	CheckTransactionResult struct{}
-
-	ValidateAccountResult struct{}
-
-	FetchAccountResult struct{}
-
-	FetchBalancesResult struct{}
-
-	DefaultProvider struct {
-		Configurer
-		TransactionCreator
-		TransactionChecker
-		TransactionConfirmer
-		AccountFetcher
-		AccountValidator
-		BalanceFetcher
-	}
-)
+type DefaultProvider struct {
+	Configurer
+	TransactionCreator
+	TransactionChecker
+	TransactionConfirmer
+	AccountFetcher
+	AccountValidator
+	BalanceFetcher
+}
 
 func (d DefaultProvider) Configure(ctx context.Context) error {
 	if d.Configurer == nil {
