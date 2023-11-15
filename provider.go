@@ -27,12 +27,12 @@ type DefaultProvider struct {
 	BalanceFetcher
 }
 
-func (d DefaultProvider) Configure(ctx context.Context) error {
+func (d DefaultProvider) Configure(ctx context.Context, opts *Options) error {
 	if d.Configurer == nil {
 		return errors.ErrUnsupported
 	}
 
-	return d.Configurer.Configure(ctx)
+	return d.Configurer.Configure(ctx, opts)
 }
 
 func (d DefaultProvider) CreateTransaction(ctx context.Context, t *Transaction) (*CreateTransactionResult, error) {

@@ -5,7 +5,7 @@ import (
 )
 
 type Configurer interface {
-	Configure(context.Context) error
+	Configure(context.Context, *Options) error
 }
 
 type ConfigurerFunc func(context.Context) error
