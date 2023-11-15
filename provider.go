@@ -5,6 +5,18 @@ import (
 	"errors"
 )
 
+type Provider interface {
+	Configurer
+	TransactionCreator
+	TransactionChecker
+	TransactionConfirmer
+	AccountFetcher
+	AccountValidator
+	BalanceFetcher
+}
+
+type NewProviderFunc func(context.Context) (Provider, error)
+
 type DefaultProvider struct {
 	Configurer
 	TransactionCreator
@@ -53,22 +65,4 @@ func (d DefaultProvider) FetchBalances(ctx context.Context, t *Transaction) (*Fe
 	}
 
 	return d.BalanceFetcher.FetchBalances(ctx, t)
-}
-
-type Provider interface {
-	Configurer
-	TransactionCreator
-	TransactionChecker
-	TransactionConfirmer
-	AccountFetcher
-	AccountValidator
-	BalanceFetcher
-}
-
-type NewProviderFunc func(context.Context) (Provider, error)
-
-func CheckCountry(tc TransactionCreator, countries ...string) TransactionCreator {
-	return TransactionCreatorFunc(func(ctx context.Context, t *Transaction) (*CreateTransactionResult, error) {
-		return tc.CreateTransaction(ctx, t)
-	})
 }

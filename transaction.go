@@ -4,6 +4,18 @@ import (
 	"context"
 )
 
+type (
+	Transaction struct {
+		ID *int64 `json:"id"`
+	}
+
+	CreateTransactionResult struct{}
+
+	ConfirmTransactionResult struct{}
+
+	CheckTransactionResult struct{}
+)
+
 type TransactionCreator interface {
 	CreateTransaction(context.Context, *Transaction) (*CreateTransactionResult, error)
 }
@@ -30,6 +42,6 @@ type TransactionChecker interface {
 
 type TransactionCheckerFunc func(context.Context, *Transaction) (*CheckTransactionResult, error)
 
-func (t TransactionCheckerFunc) CheckTransaction(ctx context.Context, transaction *Transaction) (*CreateTransactionResult, error) {
+func (t TransactionCheckerFunc) CheckTransaction(ctx context.Context, transaction *Transaction) (*CheckTransactionResult, error) {
 	return t(ctx, transaction)
 }
