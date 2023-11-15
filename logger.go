@@ -1,4 +1,4 @@
-package providersdk
+package libprovider
 
 type Logger interface {
 	Debug(...interface{})

@@ -1,4 +1,4 @@
-package providersdk
+package libprovider
 
 import (
 	"errors"
