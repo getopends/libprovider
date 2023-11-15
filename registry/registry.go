@@ -3,6 +3,8 @@ package providerd
 import (
 	"errors"
 	"sync"
+
+	"github.com/getopends/providerd"
 )
 
 var (
@@ -14,16 +16,16 @@ var (
 func NewRegistry() *Registry {
 	return &Registry{
 		mu:      sync.RWMutex{},
-		entries: make(map[string]NewProviderFunc),
+		entries: make(map[string]providerd.NewProviderFunc),
 	}
 }
 
 type Registry struct {
 	mu      sync.RWMutex
-	entries map[string]NewProviderFunc
+	entries map[string]providerd.NewProviderFunc
 }
 
-func (r *Registry) Register(name string, builder NewProviderFunc) error {
+func (r *Registry) Register(name string, builder providerd.NewProviderFunc) error {
 	r.mu.Lock()
 	defer r.mu.Unlock()
 
@@ -36,7 +38,7 @@ func (r *Registry) Register(name string, builder NewProviderFunc) error {
 	return nil
 }
 
-func (r *Registry) Lookup(name string) (NewProviderFunc, error) {
+func (r *Registry) Lookup(name string) (providerd.NewProviderFunc, error) {
 	r.mu.RLock()
 	defer r.mu.RUnlock()
 
@@ -48,7 +50,7 @@ func (r *Registry) Lookup(name string) (NewProviderFunc, error) {
 	return builder, nil
 }
 
-func (r *Registry) Walk(walkFunc func(string, NewProviderFunc)) {
+func (r *Registry) Walk(walkFunc func(string, providerd.NewProviderFunc)) {
 	r.mu.RLock()
 	defer r.mu.RUnlock()
 
