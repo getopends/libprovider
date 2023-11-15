@@ -1,4 +1,4 @@
-package providerd
+package providersdk
 
 type Options struct {
 	Logger
