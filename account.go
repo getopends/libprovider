@@ -4,6 +4,16 @@ import (
 	"context"
 )
 
+type (
+	Account struct{}
+
+	ValidateAccountResult struct{}
+
+	FetchAccountResult struct{}
+
+	FetchBalancesResult struct{}
+)
+
 type AccountValidator interface {
 	ValidateAccount(context.Context, *Account) (*ValidateAccountResult, error)
 }

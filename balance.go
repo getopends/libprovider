@@ -4,6 +4,10 @@ import (
 	"context"
 )
 
+type (
+	Balance struct{}
+)
+
 type BalanceFetcher interface {
 	FetchBalances(context.Context, *Transaction) (*FetchBalancesResult, error)
 }
