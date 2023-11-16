@@ -1,16 +1,10 @@
 package libprovider
 
 import (
-	"errors"
 	"sync"
 )
 
-var (
-	ErrProviderNotFound   = errors.New("not found")
-	ErrNotSupported       = errors.New("not supported")
-	ErrProviderDuplicated = errors.New("provider duplicated")
-)
-
+// NewRegistry
 func NewRegistry() *Registry {
 	return &Registry{
 		mu:      sync.RWMutex{},
@@ -18,11 +12,13 @@ func NewRegistry() *Registry {
 	}
 }
 
+// Registry
 type Registry struct {
 	mu      sync.RWMutex
 	entries map[string]NewProviderFunc
 }
 
+// Register
 func (r *Registry) Register(name string, builder NewProviderFunc) error {
 	r.mu.Lock()
 	defer r.mu.Unlock()
@@ -36,6 +32,7 @@ func (r *Registry) Register(name string, builder NewProviderFunc) error {
 	return nil
 }
 
+// Lookup
 func (r *Registry) Lookup(name string) (NewProviderFunc, error) {
 	r.mu.RLock()
 	defer r.mu.RUnlock()
@@ -48,6 +45,7 @@ func (r *Registry) Lookup(name string) (NewProviderFunc, error) {
 	return builder, nil
 }
 
+// Walk
 func (r *Registry) Walk(walkFunc func(string, NewProviderFunc)) {
 	r.mu.RLock()
 	defer r.mu.RUnlock()

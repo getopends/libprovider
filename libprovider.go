@@ -5,6 +5,17 @@ import (
 	"errors"
 )
 
+var (
+	// ErrProviderNotFound
+	ErrProviderNotFound = errors.New("not found")
+
+	// ErrNotSupported
+	ErrNotSupported = errors.New("not supported")
+
+	// ErrProviderDuplicated
+	ErrProviderDuplicated = errors.New("provider duplicated")
+)
+
 // ConfigureOptions
 type ConfigureOptions struct{}
 
