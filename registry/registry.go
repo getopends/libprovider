@@ -2,29 +2,31 @@ package libprovider
 
 import (
 	"sync"
+
+	"github.com/getopends/libprovider"
 )
 
-// NewRegistry
-func NewRegistry() *Registry {
+// New
+func New() *Registry {
 	return &Registry{
 		mu:      sync.RWMutex{},
-		entries: make(map[string]NewProviderFunc),
+		entries: make(map[string]libprovider.NewProviderFunc),
 	}
 }
 
 // Registry
 type Registry struct {
 	mu      sync.RWMutex
-	entries map[string]NewProviderFunc
+	entries map[string]libprovider.NewProviderFunc
 }
 
 // Register
-func (r *Registry) Register(name string, builder NewProviderFunc) error {
+func (r *Registry) Register(name string, builder libprovider.NewProviderFunc) error {
 	r.mu.Lock()
 	defer r.mu.Unlock()
 
 	if _, ok := r.entries[name]; ok {
-		return ErrProviderDuplicated
+		return libprovider.ErrProviderDuplicated
 	}
 
 	r.entries[name] = builder
@@ -33,20 +35,20 @@ func (r *Registry) Register(name string, builder NewProviderFunc) error {
 }
 
 // Lookup
-func (r *Registry) Lookup(name string) (NewProviderFunc, error) {
+func (r *Registry) Lookup(name string) (libprovider.NewProviderFunc, error) {
 	r.mu.RLock()
 	defer r.mu.RUnlock()
 
 	builder, ok := r.entries[name]
 	if !ok {
-		return nil, ErrProviderNotFound
+		return nil, libprovider.ErrProviderNotFound
 	}
 
 	return builder, nil
 }
 
 // Walk
-func (r *Registry) Walk(walkFunc func(string, NewProviderFunc)) {
+func (r *Registry) Walk(walkFunc func(string, libprovider.NewProviderFunc)) {
 	r.mu.RLock()
 	defer r.mu.RUnlock()
 
