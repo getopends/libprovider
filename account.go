@@ -4,16 +4,6 @@ import (
 	"context"
 )
 
-type (
-	Account struct{}
-
-	ValidateAccountResult struct{}
-
-	FetchAccountResult struct{}
-
-	FetchBalancesResult struct{}
-)
-
 type AccountValidator interface {
 	ValidateAccount(context.Context, *Account) (*ValidateAccountResult, error)
 }
@@ -33,3 +23,9 @@ type AccountFetcherFunc func(context.Context, *Transaction) (*ConfirmTransaction
 func (t AccountFetcherFunc) FetchAccount(ctx context.Context, transaction *Transaction) (*ConfirmTransactionResult, error) {
 	return t(ctx, transaction)
 }
+
+type Account struct{}
+
+type ValidateAccountResult struct{}
+
+type FetchAccountResult struct{}
