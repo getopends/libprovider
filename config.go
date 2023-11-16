@@ -4,12 +4,12 @@ import (
 	"context"
 )
 
-type ProviderConfiguration interface {
+type Configuration interface {
 	Configure(context.Context, *ConfigureOptions) error
 }
 
-type ConfigurerFunc func(context.Context) error
+type ConfigurationFunc func(context.Context) error
 
-func (c ConfigurerFunc) Configure(ctx context.Context) error {
+func (c ConfigurationFunc) Configure(ctx context.Context) error {
 	return c(ctx)
 }

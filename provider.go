@@ -10,7 +10,7 @@ type ConfigureOptions struct{}
 
 // Provider
 type Provider interface {
-	ProviderConfiguration
+	Configuration
 	TransactionCreator
 	TransactionChecker
 	TransactionConfirmer
@@ -25,7 +25,7 @@ type NewProviderFunc func(context.Context) (Provider, error)
 
 // DefaultProvider
 type DefaultProvider struct {
-	ProviderConfiguration
+	Configuration
 	TransactionCreator
 	TransactionChecker
 	TransactionConfirmer
@@ -37,11 +37,11 @@ type DefaultProvider struct {
 
 // Configure
 func (d DefaultProvider) Configure(ctx context.Context, opts *ConfigureOptions) error {
-	if d.ProviderConfiguration == nil {
+	if d.Configuration == nil {
 		return errors.ErrUnsupported
 	}
 
-	return d.ProviderConfiguration.Configure(ctx, opts)
+	return d.Configuration.Configure(ctx, opts)
 }
 
 // CreateTransaction
