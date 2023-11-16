@@ -12,7 +12,7 @@ type Provider interface {
 	TransactionConfirmer
 	AccountFetcher
 	AccountValidator
-	BalanceFetcher
+	BalancesFetcher
 }
 
 type NewProviderFunc func(context.Context) (Provider, error)
@@ -24,7 +24,7 @@ type DefaultProvider struct {
 	TransactionConfirmer
 	AccountFetcher
 	AccountValidator
-	BalanceFetcher
+	BalancesFetcher
 }
 
 func (d DefaultProvider) Configure(ctx context.Context, opts *Options) error {
@@ -60,9 +60,9 @@ func (d DefaultProvider) CheckTransaction(ctx context.Context, t *Transaction) (
 }
 
 func (d DefaultProvider) FetchBalances(ctx context.Context, t *Transaction) (*FetchBalancesResult, error) {
-	if d.BalanceFetcher == nil {
+	if d.BalancesFetcher == nil {
 		return nil, errors.ErrUnsupported
 	}
 
-	return d.BalanceFetcher.FetchBalances(ctx, t)
+	return d.BalancesFetcher.FetchBalances(ctx, t)
 }

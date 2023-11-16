@@ -4,13 +4,13 @@ import (
 	"context"
 )
 
-type ProductFetcher interface {
+type ProductsFetcher interface {
 	FetchProducts(context.Context) (*FetchProductsResult, error)
 }
 
-type ProductFetcherFunc func(context.Context) (*FetchProductsResult, error)
+type ProductsFetcherFunc func(context.Context) (*FetchProductsResult, error)
 
-func (b ProductFetcherFunc) FetchProducts(ctx context.Context) (*FetchProductsResult, error) {
+func (b ProductsFetcherFunc) FetchProducts(ctx context.Context) (*FetchProductsResult, error) {
 	return b(ctx)
 }
 
