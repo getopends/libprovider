@@ -4,8 +4,8 @@ import (
 	"context"
 )
 
-type Configurer interface {
-	Configure(context.Context, *Options) error
+type ProviderConfiguration interface {
+	Configure(context.Context, *ConfigureOptions) error
 }
 
 type ConfigurerFunc func(context.Context) error
