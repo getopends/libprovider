@@ -5,6 +5,8 @@ import (
 	"errors"
 )
 
+type Options struct{}
+
 type Provider interface {
 	Configurer
 	TransactionCreator

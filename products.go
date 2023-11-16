@@ -10,8 +10,8 @@ type ProductsFetcher interface {
 
 type ProductsFetcherFunc func(context.Context) (*FetchProductsResult, error)
 
-func (b ProductsFetcherFunc) FetchProducts(ctx context.Context) (*FetchProductsResult, error) {
-	return b(ctx)
+func (p ProductsFetcherFunc) FetchProducts(ctx context.Context) (*FetchProductsResult, error) {
+	return p(ctx)
 }
 
 type Product struct{}
