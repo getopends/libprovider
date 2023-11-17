@@ -70,7 +70,21 @@ func (t TransactionReverterFunc) RevertTransaction(ctx context.Context, transact
 }
 
 // Transaction
-type Transaction struct{}
+type Transaction struct {
+	ProductID       *int64          `json:"product_id"`
+	ReceivingMethod ReceivingMethod `json:"receiving_method"`
+	Operator        Operator        `json:"operator"`
+}
+
+type Operator struct {
+	ID int64 `json:"id"`
+}
+
+type ReceivingMethod struct {
+	CardNumber    string `json:"card_number"`
+	PhoneNumber   string `json:"phone_number"`
+	AccountNumber string `json:"account_number"`
+}
 
 // TransactionResult
 type TransactionResult struct {
