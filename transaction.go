@@ -4,129 +4,75 @@ import (
 	"context"
 )
 
+type TransactionStatus uint
+
+const (
+	TransactionCreated   = TransactionStatus(1000)
+	TransactionConfirmed = TransactionStatus(2000)
+	TransactionRejected  = TransactionStatus(3000)
+	TransactionCancelled = TransactionStatus(4000)
+	TransactionSubmitted = TransactionStatus(5000)
+	TransactionCompleted = TransactionStatus(6000)
+	TransactionReverted  = TransactionStatus(7000)
+	TransactionDeclined  = TransactionStatus(8000)
+)
+
 // TransactionCreator
 type TransactionCreator interface {
-	CreateTransaction(context.Context, *Transaction) (*CreateTransactionResult, error)
+	CreateTransaction(context.Context, *Transaction) (*TransactionResult, error)
 }
 
 // TransactionCreatorFunc
-type TransactionCreatorFunc func(context.Context, *Transaction) (*CreateTransactionResult, error)
+type TransactionCreatorFunc func(context.Context, *Transaction) (*TransactionResult, error)
 
 // CreateTransaction
-func (t TransactionCreatorFunc) CreateTransaction(ctx context.Context, transaction *Transaction) (*CreateTransactionResult, error) {
+func (t TransactionCreatorFunc) CreateTransaction(ctx context.Context, transaction *Transaction) (*TransactionResult, error) {
 	return t(ctx, transaction)
 }
 
 // TransactionConfirmer
 type TransactionConfirmer interface {
-	ConfirmTransaction(context.Context, *Transaction) (*ConfirmTransactionResult, error)
+	ConfirmTransaction(context.Context, *Transaction) (*TransactionResult, error)
 }
 
 // TransactionConfirmerFunc
-type TransactionConfirmerFunc func(context.Context, *Transaction) (*ConfirmTransactionResult, error)
+type TransactionConfirmerFunc func(context.Context, *Transaction) (*TransactionResult, error)
 
 // ConfirmTransaction
-func (t TransactionConfirmerFunc) ConfirmTransaction(ctx context.Context, transaction *Transaction) (*ConfirmTransactionResult, error) {
+func (t TransactionConfirmerFunc) ConfirmTransaction(ctx context.Context, transaction *Transaction) (*TransactionResult, error) {
 	return t(ctx, transaction)
 }
 
 // TransactionChecker
 type TransactionChecker interface {
-	CheckTransaction(context.Context, *Transaction) (*CheckTransactionResult, error)
+	CheckTransaction(context.Context, *Transaction) (*TransactionResult, error)
 }
 
 // TransactionCheckerFunc
-type TransactionCheckerFunc func(context.Context, *Transaction) (*CheckTransactionResult, error)
+type TransactionCheckerFunc func(context.Context, *Transaction) (*TransactionResult, error)
 
 // CheckTransaction
-func (t TransactionCheckerFunc) CheckTransaction(ctx context.Context, transaction *Transaction) (*CheckTransactionResult, error) {
+func (t TransactionCheckerFunc) CheckTransaction(ctx context.Context, transaction *Transaction) (*TransactionResult, error) {
 	return t(ctx, transaction)
 }
 
 // TransactionReverter
 type TransactionReverter interface {
-	RevertTransaction(context.Context, *Transaction) (*RevertTransactionResult, error)
+	RevertTransaction(context.Context, *Transaction) (*TransactionResult, error)
 }
 
 // TransactionReverterFunc
-type TransactionReverterFunc func(context.Context, *Transaction) (*RevertTransactionResult, error)
+type TransactionReverterFunc func(context.Context, *Transaction) (*TransactionResult, error)
 
 // RevertTransaction
-func (t TransactionReverterFunc) RevertTransaction(ctx context.Context, transaction *Transaction) (*RevertTransactionResult, error) {
+func (t TransactionReverterFunc) RevertTransaction(ctx context.Context, transaction *Transaction) (*TransactionResult, error) {
 	return t(ctx, transaction)
 }
 
 // Transaction
 type Transaction struct{}
 
-// CreateTransactionResult
-type CreateTransactionResult struct {
-	Status Status `json:"status"`
-}
-
-// ConfirmTransactionResult
-type ConfirmTransactionResult struct{}
-
-// CheckTransactionResult
-type CheckTransactionResult struct{}
-
-// RevertTransactionResult
-type RevertTransactionResult struct{}
-
-type TransactionStatus uint
-
-var (
-	TransactionCreated = Status{
-		Code:    1000,
-		Message: "CREATED",
-		Class:   1,
-	}
-
-	TransactionConfirmed = Status{
-		Code:    2000,
-		Message: "CONFIRMED",
-		Class:   2,
-	}
-
-	TransactionRejected = Status{
-		Code:    3000,
-		Message: "REJECTED",
-		Class:   3,
-	}
-
-	TransactionCancelled = Status{
-		Code:    4000,
-		Message: "CANCELLED",
-		Class:   4,
-	}
-
-	TransactionSubmitted = Status{
-		Code:    5000,
-		Message: "SUBMITTED",
-		Class:   5,
-	}
-
-	TransactionCompleted = Status{
-		Code:    6000,
-		Message: "COMPLETED",
-		Class:   6,
-	}
-
-	TransactionReverted = Status{
-		Code:    7000,
-		Message: "REVERTED",
-		Class:   7,
-	}
-
-	TransactionDeclined = Status{
-		Code:    8000,
-		Message: "DECLINED",
-		Class:   8,
-	}
-)
-
-type Status struct {
-	Code    int
-	Message string
-	Class   int
+// TransactionResult
+type TransactionResult struct {
+	Status TransactionStatus `json:"status"`
 }

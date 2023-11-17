@@ -27,6 +27,6 @@ func (p *ExampleProvider) Configure(ctx context.Context, opts *libprovider.Optio
 	return nil
 }
 
-func (p *ExampleProvider) CreateTransaction(ctx context.Context, t *libprovider.Transaction) (*libprovider.CreateTransactionResult, error) {
+func (p *ExampleProvider) CreateTransaction(ctx context.Context, t *libprovider.Transaction) (*libprovider.TransactionResult, error) {
 	return nil, libprovider.ErrNotSupported
 }
