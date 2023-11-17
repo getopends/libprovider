@@ -1,0 +1,13 @@
+{
+    "name": "Example",
+    "slug": "example-moz",
+    "version": "0.1.0",
+    "secrets": [
+        "USERNAME",
+        "PASSWORD"
+    ],
+    "env": [
+        "HOST",
+        "PORT"
+    ]
+}

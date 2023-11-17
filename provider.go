@@ -17,15 +17,27 @@ var (
 )
 
 // Options ...
-type Options struct{}
+type Options struct {
+	Logger  Logger
+	Env     Envs
+	Secrets Envs
+}
+
+type Envs map[string]Env
+
+type Env struct {
+	Value string
+}
 
 // Info ...
 type Info struct {
-	Code    string
-	Name    string
-	Slug    string
-	Version string
-	Author  string
+	Code    string   `json:"code"`
+	Name    string   `json:"name"`
+	Slug    string   `json:"slug"`
+	Version string   `json:"Version"`
+	Author  string   `json:"author"`
+	Env     []string `json:"variables"`
+	Secrets []string `json:"secrets"`
 }
 
 // BuildFunc ...
@@ -42,4 +54,9 @@ type Error struct{}
 
 func (e Error) Error() string {
 	return "error"
+}
+
+type Logger interface {
+	Debug(...interface{})
+	Debugf(string, ...interface{})
 }

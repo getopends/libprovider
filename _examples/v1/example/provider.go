@@ -20,6 +20,15 @@ func (p *ExampleProvider) Info() libprovider.Info {
 		Slug:    "example-moz",
 		Author:  "Edson Michaque",
 		Version: "0.1.0",
+		Secrets: []string{
+			"USERNAME",
+			"PASSWORD",
+			"ENCRYPTION_KEY"
+		},
+		Env: []string{
+			"HOST",
+			"PORT"
+		},
 	}
 }
 
