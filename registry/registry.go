@@ -10,23 +10,23 @@ import (
 func New() *Registry {
 	return &Registry{
 		l:       sync.RWMutex{},
-		entries: make(map[string]libprovider.NewProviderFunc),
+		entries: make(map[string]libprovider.BuildFunc),
 	}
 }
 
 // Registry
 type Registry struct {
 	l       sync.RWMutex
-	entries map[string]libprovider.NewProviderFunc
+	entries map[string]libprovider.BuildFunc
 }
 
 // Register
-func (r *Registry) Register(name string, builder libprovider.NewProviderFunc) error {
+func (r *Registry) Register(name string, builder libprovider.BuildFunc) error {
 	r.l.Lock()
 	defer r.l.Unlock()
 
 	if _, ok := r.entries[name]; ok {
-		return libprovider.ErrProviderDuplicated
+		return libprovider.ErrDuplicated
 	}
 
 	r.entries[name] = builder
@@ -35,20 +35,20 @@ func (r *Registry) Register(name string, builder libprovider.NewProviderFunc) er
 }
 
 // Lookup
-func (r *Registry) Lookup(name string) (libprovider.NewProviderFunc, error) {
+func (r *Registry) Lookup(name string) (libprovider.BuildFunc, error) {
 	r.l.RLock()
 	defer r.l.RUnlock()
 
 	builder, ok := r.entries[name]
 	if !ok {
-		return nil, libprovider.ErrProviderNotFound
+		return nil, libprovider.ErrNotFound
 	}
 
 	return builder, nil
 }
 
 // Walk
-func (r *Registry) Walk(walkFunc func(string, libprovider.NewProviderFunc)) {
+func (r *Registry) Walk(walkFunc func(string, libprovider.BuildFunc)) {
 	r.l.RLock()
 	defer r.l.RUnlock()
 
