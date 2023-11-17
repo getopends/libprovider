@@ -9,8 +9,10 @@ import (
 var _ libprovider.Provider = &ExampleProvider{}
 
 const (
-	envHost = "HOST"
-	envPort = "PORT"
+	envHost     = "HOST"
+	envPort     = "PORT"
+	envUsername = "USERNAME"
+	envpassword = "PASSWORD"
 )
 
 func NewExampleProvider(context.Context) libprovider.Provider {
@@ -28,24 +30,40 @@ func (p *ExampleProvider) Info() libprovider.Info {
 		Slug:    "example-moz",
 		Author:  "Edson Michaque",
 		Version: "0.1.0",
-		Secrets: []string{
-			"USERNAME",
-			"PASSWORD",
-		},
-		Env: []string{
-			"HOST",
-			"PORT",
+		Variables: map[string]libprovider.VariableDefinition{
+			"HOST": {
+				Default: libprovider.String("example.com"),
+			},
+			"PORT": {
+				Default: libprovider.String("10"),
+			},
+			"USERNAME": {
+				Secret: true,
+			},
+			"PASSWORD": {
+				Secret: true,
+			},
 		},
 	}
 }
 
 func (p *ExampleProvider) Configure(ctx context.Context, opts *libprovider.Options) error {
-	apiHost, err := p.opts.Env.Get(envHost)
+	apiHost, err := p.opts.Variables.Get(envHost)
 	if err != nil {
 		return err
 	}
 
-	apiPort, err := p.opts.Env.Get(envPort)
+	apiPort, err := p.opts.Variables.Get(envPort)
+	if err != nil {
+		return err
+	}
+
+	_, err = p.opts.Variables.Get(envUsername)
+	if err != nil {
+		return err
+	}
+
+	_, err = p.opts.Variables.Get(envPassword)
 	if err != nil {
 		return err
 	}

@@ -18,14 +18,14 @@ var (
 
 // Options ...
 type Options struct {
-	Logger  Logger
-	Env     Envs
-	Secrets Envs
+	Logger    Logger
+	Variables Variables
+	Secrets   Variables
 }
 
-type Envs map[string]Env
+type Variables map[string]Variable
 
-func (e Envs) Get(key string) (string, error) {
+func (e Variables) Get(key string) (string, error) {
 	if v, ok := e[key]; ok {
 		return v.Value, nil
 	}
@@ -33,19 +33,26 @@ func (e Envs) Get(key string) (string, error) {
 	return "", ErrNotFound
 }
 
-type Env struct {
+type Variable struct {
 	Value string
 }
 
 // Info ...
 type Info struct {
-	Code    string   `json:"code"`
-	Name    string   `json:"name"`
-	Slug    string   `json:"slug"`
-	Version string   `json:"Version"`
-	Author  string   `json:"author"`
-	Env     []string `json:"variables"`
-	Secrets []string `json:"secrets"`
+	Code      string                        `json:"code"`
+	Name      string                        `json:"name"`
+	Slug      string                        `json:"slug"`
+	Version   string                        `json:"Version"`
+	Author    string                        `json:"author"`
+	Variables map[string]VariableDefinition `json:"variables"`
+	Secrets   []string                      `json:"secrets"`
+}
+
+type VariableDefinition struct {
+	Default     *string
+	Required    bool
+	Secret      bool
+	Description string
 }
 
 // BuildFunc ...
@@ -67,4 +74,8 @@ func (e Error) Error() string {
 type Logger interface {
 	Debug(...interface{})
 	Debugf(string, ...interface{})
+}
+
+func String(v string) *string {
+	return &v
 }
