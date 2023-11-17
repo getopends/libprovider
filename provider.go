@@ -25,6 +25,14 @@ type Options struct {
 
 type Envs map[string]Env
 
+func (e Envs) Get(key string) (string, error) {
+	if v, ok := e[key]; ok {
+		return v.Value, nil
+	}
+
+	return "", ErrNotFound
+}
+
 type Env struct {
 	Value string
 }

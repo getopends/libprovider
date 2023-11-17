@@ -8,11 +8,19 @@ import (
 
 var _ libprovider.Provider = &ExampleProvider{}
 
+const (
+	envHost = "HOST"
+	envPort = "PORT"
+)
+
 func NewExampleProvider(context.Context) libprovider.Provider {
 	return &ExampleProvider{}
 }
 
-type ExampleProvider struct{}
+type ExampleProvider struct {
+	opts             *libprovider.Options
+	apiHost, apiPort string
+}
 
 func (p *ExampleProvider) Info() libprovider.Info {
 	return libprovider.Info{
@@ -23,16 +31,28 @@ func (p *ExampleProvider) Info() libprovider.Info {
 		Secrets: []string{
 			"USERNAME",
 			"PASSWORD",
-			"ENCRYPTION_KEY"
 		},
 		Env: []string{
 			"HOST",
-			"PORT"
+			"PORT",
 		},
 	}
 }
 
 func (p *ExampleProvider) Configure(ctx context.Context, opts *libprovider.Options) error {
+	apiHost, err := p.opts.Env.Get(envHost)
+	if err != nil {
+		return err
+	}
+
+	apiPort, err := p.opts.Env.Get(envPort)
+	if err != nil {
+		return err
+	}
+
+	p.apiHost = apiHost
+	p.apiPort = apiPort
+
 	return nil
 }
 
