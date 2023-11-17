@@ -6,7 +6,7 @@ import (
 
 // Configuration
 type Configuration interface {
-	Configure(context.Context, *ConfigureOptions) error
+	Configure(context.Context, *Options) error
 }
 
 // ConfigurationFunc

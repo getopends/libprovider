@@ -16,27 +16,27 @@ var (
 	ErrProviderDuplicated = errors.New("provider duplicated")
 )
 
-// ConfigureOptions
-type ConfigureOptions struct{}
+type Options struct{}
+
+type Info struct {
+	Code    string
+	Name    string
+	Slug    string
+	Version string
+	Author  string
+}
 
 // Provider
 type Provider interface {
-	Configuration
-	TransactionCreator
-	TransactionChecker
-	TransactionConfirmer
-	AccountFetcher
-	AccountValidator
-	BalancesFetcher
-	ProductsFetcher
+	Info() Info
+	Configure(context.Context, *Options) error
 }
 
 // NewProviderFunc
-type NewProviderFunc func(context.Context) (Provider, error)
+type NewProviderFunc func(context.Context) Provider
 
 // DefaultProvider
 type DefaultProvider struct {
-	Configuration
 	TransactionCreator
 	TransactionChecker
 	TransactionConfirmer
@@ -44,15 +44,6 @@ type DefaultProvider struct {
 	AccountValidator
 	BalancesFetcher
 	ProductsFetcher
-}
-
-// Configure
-func (d DefaultProvider) Configure(ctx context.Context, opts *ConfigureOptions) error {
-	if d.Configuration == nil {
-		return errors.ErrUnsupported
-	}
-
-	return d.Configuration.Configure(ctx, opts)
 }
 
 // CreateTransaction
