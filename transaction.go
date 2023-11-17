@@ -47,10 +47,20 @@ func (t TransactionCheckerFunc) CheckTransaction(ctx context.Context, transactio
 type Transaction struct{}
 
 // CreateTransactionResult
-type CreateTransactionResult struct{}
+type CreateTransactionResult struct {
+	Status TransactionStatus `json:"status"`
+}
 
 // ConfirmTransactionResult
 type ConfirmTransactionResult struct{}
 
 // CheckTransactionResult
 type CheckTransactionResult struct{}
+
+type TransactionStatus uint8
+
+const (
+	TransactionAccepted TransactionStatus = iota
+	TransactionDeclided
+	TransactionCompleted
+)

@@ -1,4 +1,4 @@
-package examples
+package example
 
 import (
 	"context"
@@ -25,4 +25,8 @@ func (p *ExampleProvider) Info() libprovider.Info {
 
 func (p *ExampleProvider) Configure(ctx context.Context, opts *libprovider.Options) error {
 	return nil
+}
+
+func (p *ExampleProvider) CreateTransaction(ctx context.Context, t *libprovider.Transaction) (*libprovider.CreateTransactionResult, error) {
+	return nil, libprovider.ErrNotSupported
 }
