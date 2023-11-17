@@ -45,7 +45,8 @@ type Info struct {
 	Version   string                        `json:"Version"`
 	Author    string                        `json:"author"`
 	Variables map[string]VariableDefinition `json:"variables"`
-	Secrets   []string                      `json:"secrets"`
+	URL       string                        `json:"url"`
+	Icon      string                        `json:"ico"`
 }
 
 type VariableDefinition struct {

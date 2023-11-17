@@ -10,10 +10,10 @@ type AccountValidator interface {
 }
 
 // AccountValidatorFunc
-type AccountValidatorFunc func(context.Context, *Transaction) (*ConfirmTransactionResult, error)
+type AccountValidatorFunc func(context.Context, *Transaction) (*TransactionResult, error)
 
 // ValidateAccount
-func (a AccountValidatorFunc) ValidateAccount(ctx context.Context, transaction *Transaction) (*ConfirmTransactionResult, error) {
+func (a AccountValidatorFunc) ValidateAccount(ctx context.Context, transaction *Transaction) (*TransactionResult, error) {
 	return a(ctx, transaction)
 }
 
@@ -23,10 +23,10 @@ type AccountFetcher interface {
 }
 
 // AccountFetcherFunc
-type AccountFetcherFunc func(context.Context, *Transaction) (*ConfirmTransactionResult, error)
+type AccountFetcherFunc func(context.Context, *Transaction) (*TransactionResult, error)
 
 // FetchAccount
-func (t AccountFetcherFunc) FetchAccount(ctx context.Context, transaction *Transaction) (*ConfirmTransactionResult, error) {
+func (t AccountFetcherFunc) FetchAccount(ctx context.Context, transaction *Transaction) (*TransactionResult, error) {
 	return t(ctx, transaction)
 }
 

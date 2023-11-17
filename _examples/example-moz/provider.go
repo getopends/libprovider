@@ -12,7 +12,7 @@ const (
 	envHost     = "HOST"
 	envPort     = "PORT"
 	envUsername = "USERNAME"
-	envpassword = "PASSWORD"
+	envPassword = "PASSWORD"
 )
 
 func NewExampleProvider(context.Context) libprovider.Provider {
@@ -30,6 +30,8 @@ func (p *ExampleProvider) Info() libprovider.Info {
 		Slug:    "example-moz",
 		Author:  "Edson Michaque",
 		Version: "0.1.0",
+		URL:     "http://example.com",
+		Icon:    "http:example.com",
 		Variables: map[string]libprovider.VariableDefinition{
 			"HOST": {
 				Default: libprovider.String("example.com"),
